@@ -1,19 +1,16 @@
 package abstractions;
 
-import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.Optional;
 
 import enums.Gender;
-import generics.PairSet;
 
 public interface HumanityMember {
-	LocalDate getBirthDate();
+	
+	Integer getBirthYear();
 
-	LocalDate getDeathDate();
+	Optional<Integer> getDeathYear();
 
-	void setDeathDate(LocalDate date);
+	void setDeathYear(Integer year);
 
 	Gender getGender();
-
-
 }

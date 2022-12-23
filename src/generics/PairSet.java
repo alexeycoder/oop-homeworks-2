@@ -5,7 +5,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * Реализация Множества, допускающего не более двух элементов.
+ */
 public class PairSet<T> extends AbstractSet<T> {
+	public static final int MAX_SIZE = 2;
 	private T item0;
 	private T item1;
 	private int size;
@@ -83,12 +87,12 @@ public class PairSet<T> extends AbstractSet<T> {
 
 	@Override
 	public boolean addAll(Collection<? extends T> c) {
-		if (size == 2) {
+		if (size == MAX_SIZE) {
 			return false;
 		}
 		boolean result = false;
 		for (T value : c) {
-			if (size == 2) {
+			if (size == MAX_SIZE) {
 				break;
 			}
 			result |= setAvailableSlot(value);
@@ -98,12 +102,14 @@ public class PairSet<T> extends AbstractSet<T> {
 
 	// // TEST:
 	// public static void main(String[] args) {
-	// 	var parents = new PairSet<String>("mother", "father");
+	// var parents = new PairSet<String>("mother", "father");
 
-	// 	System.out.println(parents);
-	// 	System.out.println(parents.contains("moth"));
-	// 	System.out.println(parents.add("third parent"));
-	// 	System.out.println(parents);
-	// 	System.out.println(parents.contains("third parent"));
+	// System.out.println(parents);
+	// System.out.println(parents.contains("moth"));
+	// System.out.println(parents.add("third parent"));
+	// System.out.println(parents);
+	// System.out.println(parents.contains("third parent"));
+	// parents.add("third parent");
+	// System.out.println(parents);
 	// }
 }

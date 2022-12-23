@@ -4,5 +4,5 @@ public interface SocietyMember {
 	
 	String getName();
 
-	void setName();
+	void setName(String name);
 }
