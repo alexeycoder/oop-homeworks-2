@@ -1,9 +1,8 @@
 package abstractions;
 
-import java.util.HashSet;
+import java.util.Set;
 
 import enums.Gender;
-import generics.PairSet;
 
 public interface FamilyMember<T extends FamilyMember<T>> extends SocietyMember, HumanityMember {
 
@@ -12,14 +11,14 @@ public interface FamilyMember<T extends FamilyMember<T>> extends SocietyMember, 
 	 * 
 	 * @return Множество прямых родителей.
 	 */
-	PairSet<T> getParents();
+	Set<T> getParents();
 
 	/**
 	 * Дети индивида.
 	 * 
 	 * @return Множество детей.
 	 */
-	HashSet<T> getChildren();
+	Set<T> getChildren();
 
 	/**
 	 * Проверка возможности создания ребёнка с автоматическим образованием связи

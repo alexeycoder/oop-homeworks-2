@@ -1,11 +1,12 @@
 package implementations;
 
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import abstractions.FamilyMember;
 import enums.Gender;
+import generics.MutableSet;
 import generics.PairSet;
 
 /** Индивид. Базовый элемент самоописываемой генеалогической структуры. */
@@ -16,7 +17,7 @@ public class Individual implements FamilyMember<Individual> {
 	private final Integer birthYear;
 	private Integer deathYear; // the only null-allowed field
 	private final PairSet<Individual> parents;
-	private final HashSet<Individual> children;
+	private final MutableSet<Individual> children;
 
 	public Individual(String name, Gender gender, Integer birthYear) {
 		this(name, gender, birthYear, null);
@@ -28,7 +29,7 @@ public class Individual implements FamilyMember<Individual> {
 		this.birthYear = Objects.requireNonNull(birthYear);
 		this.deathYear = deathYear;
 		this.parents = new PairSet<Individual>();
-		this.children = new HashSet<Individual>();
+		this.children = new MutableSet<Individual>();
 	}
 
 	@Override
@@ -62,12 +63,12 @@ public class Individual implements FamilyMember<Individual> {
 	}
 
 	@Override
-	public PairSet<Individual> getParents() {
+	public Set<Individual> getParents() {
 		return parents;
 	}
 
 	@Override
-	public HashSet<Individual> getChildren() {
+	public Set<Individual> getChildren() {
 		return children;
 	}
 
@@ -162,5 +163,6 @@ public class Individual implements FamilyMember<Individual> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(name, gender, birthYear, deathYear);
+		// return Objects.hash(name, gender, birthYear, deathYear, parents, children);
 	}
 }

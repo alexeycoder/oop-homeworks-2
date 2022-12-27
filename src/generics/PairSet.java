@@ -4,31 +4,36 @@ import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * Реализация Множества, допускающего не более двух элементов.
+ * Можно только добавлять элементы.
  */
-public class PairSet<T> extends AbstractSet<T> {
+public class PairSet<E> extends AbstractSet<E> {
 	public static final int MAX_SIZE = 2;
-	private T item0;
-	private T item1;
+	private E item0;
+	private E item1;
 	private int size;
+
+	boolean changed = true;
+	private int hashCode;
 
 	public PairSet() {
 		size = 0;
 	}
 
-	public PairSet(T value) {
+	public PairSet(E value) {
 		this(value, null);
 	}
 
-	public PairSet(T firstValue, T secondValue) {
+	public PairSet(E firstValue, E secondValue) {
 		this.size = 0;
 		setAvailableSlot(firstValue);
 		setAvailableSlot(secondValue);
 	}
 
-	private boolean setAvailableSlot(T value) {
+	private boolean setAvailableSlot(E value) {
 		if (value == null) {
 			return false;
 		}
@@ -36,6 +41,7 @@ public class PairSet<T> extends AbstractSet<T> {
 			case 0 -> {
 				item0 = value;
 				size = 1;
+				changed = true;
 				return true;
 			}
 			case 1 -> {
@@ -44,6 +50,7 @@ public class PairSet<T> extends AbstractSet<T> {
 				}
 				item1 = value;
 				size = 2;
+				changed = true;
 				return true;
 			}
 			default -> {
@@ -58,8 +65,8 @@ public class PairSet<T> extends AbstractSet<T> {
 	}
 
 	@Override
-	public Iterator<T> iterator() {
-		return new Iterator<T>() {
+	public Iterator<E> iterator() {
+		return new Iterator<E>() {
 			int next = 0;
 
 			@Override
@@ -68,8 +75,8 @@ public class PairSet<T> extends AbstractSet<T> {
 			}
 
 			@Override
-			public T next() {
-				var result = switch (next) {
+			public E next() {
+				E result = switch (next) {
 					case 0 -> item0;
 					case 1 -> item1;
 					default -> throw new NoSuchElementException();
@@ -81,23 +88,32 @@ public class PairSet<T> extends AbstractSet<T> {
 	}
 
 	@Override
-	public boolean add(T e) {
+	public boolean add(E e) {
 		return setAvailableSlot(e);
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends T> c) {
+	public boolean addAll(Collection<? extends E> c) {
 		if (size == MAX_SIZE) {
 			return false;
 		}
 		boolean result = false;
-		for (T value : c) {
+		for (E value : c) {
 			if (size == MAX_SIZE) {
 				break;
 			}
 			result |= setAvailableSlot(value);
 		}
 		return result;
+	}
+
+	@Override
+	public int hashCode() {
+		if (changed) {
+			changed = false;
+			hashCode = Objects.hashCode(item0) + Objects.hashCode(item1);
+		}
+		return hashCode;
 	}
 
 	// // TEST:
@@ -109,6 +125,7 @@ public class PairSet<T> extends AbstractSet<T> {
 	// System.out.println(parents.add("third parent"));
 	// System.out.println(parents);
 	// System.out.println(parents.contains("third parent"));
+	// parents.remove("father");
 	// parents.add("third parent");
 	// System.out.println(parents);
 	// }
