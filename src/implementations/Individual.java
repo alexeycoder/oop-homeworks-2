@@ -6,7 +6,7 @@ import java.util.Set;
 
 import abstractions.FamilyMember;
 import enums.Gender;
-import generics.MutableSet;
+import generics.MutablesSet;
 import generics.PairSet;
 
 /** Индивид. Базовый элемент самоописываемой генеалогической структуры. */
@@ -17,7 +17,7 @@ public class Individual implements FamilyMember<Individual> {
 	private final Integer birthYear;
 	private Integer deathYear; // the only null-allowed field
 	private final PairSet<Individual> parents;
-	private final MutableSet<Individual> children;
+	private final MutablesSet<Individual> children;
 
 	public Individual(String name, Gender gender, Integer birthYear) {
 		this(name, gender, birthYear, null);
@@ -29,7 +29,7 @@ public class Individual implements FamilyMember<Individual> {
 		this.birthYear = Objects.requireNonNull(birthYear);
 		this.deathYear = deathYear;
 		this.parents = new PairSet<Individual>();
-		this.children = new MutableSet<Individual>();
+		this.children = new MutablesSet<Individual>();
 	}
 
 	@Override

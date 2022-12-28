@@ -43,6 +43,14 @@ public class App {
         System.out.println();
         System.out.println("ПРАВНУЧКИ:");
         printIndividuals(IndividualUtils.getGranddaughters(root));
+
+        System.out.println();
+        System.out.println("ДЯДИ:");
+        printIndividuals(IndividualUtils.getUncles(root));
+
+        System.out.println();
+        System.out.println("ТЁТИ:");
+        printIndividuals(IndividualUtils.getAunts(root));
         System.out.println();
     }
 

@@ -10,7 +10,7 @@ import java.util.Objects;
  * Множество, которое может содержать изменяемые объекты.
  * Можно только добавлять элементы.
  */
-public class MutableSet<E> extends AbstractSet<E> {
+public class MutablesSet<E> extends AbstractSet<E> {
 	private final ArrayList<E> list = new ArrayList<>();
 
 	private boolean changed = false;

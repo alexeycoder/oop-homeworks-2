@@ -8,7 +8,10 @@ public class TestFamily {
 		var root = new Individual("Пушкин Александр Сергеевич", Gender.MALE, 1799, 1837);
 
 		var father = new Individual("Пушкин Сергей Львович", Gender.MALE, 1770, 1848);
-		father.registerParent(new Individual("Пушкин Лев Александрович", Gender.MALE, 1723, 1790));
+		var grandFather = new Individual("Пушкин Лев Александрович", Gender.MALE, 1723, 1790);
+		var fatherBrother = grandFather.madeChild("Василий Львович Пушкин", Gender.MALE, 1766, null);
+		fatherBrother.setDeathYear(1830);
+		father.registerParent(grandFather);
 		father.registerParent(new Individual("Чичерина Ольга Васильевна", Gender.FEMALE, 1737, 1802));
 
 		var mother = new Individual("Ганнибал Надежда Осиповна", Gender.FEMALE, 1775, 1836);

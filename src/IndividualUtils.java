@@ -16,45 +16,82 @@ public class IndividualUtils {
 		return individual.getParents().stream().filter(IndividualUtils::isMale).findFirst();
 	}
 
-	public static List<Individual> getGrandmothers(Individual individual) {
+	// grandparents
+
+	public static List<Individual> getGrandparents(Individual individual) {
 		return individual.getParents().stream()
-				.flatMap(ind -> ind.getParents().stream())
-				.filter(IndividualUtils::isFemale).distinct().toList();
+				.flatMap(p -> p.getParents().stream())
+				.distinct().toList();
+	}
+
+	public static List<Individual> getGrandmothers(Individual individual) {
+		return getGrandparents(individual).stream()
+				.filter(IndividualUtils::isFemale).toList();
 	}
 
 	public static List<Individual> getGrandfathers(Individual individual) {
+		return getGrandparents(individual).stream()
+				.filter(IndividualUtils::isMale).toList();
+	}
+
+	// siblings
+
+	public static List<Individual> getSiblings(Individual individual) {
 		return individual.getParents().stream()
-				.flatMap(ind -> ind.getParents().stream())
-				.filter(IndividualUtils::isMale).distinct().toList();
+				.flatMap(p -> p.getChildren().stream())
+				.filter(Predicate.not(individual::equals))
+				.distinct().toList();
 	}
 
 	public static List<Individual> getBrothers(Individual individual) {
-		return individual.getParents().stream()
-				.flatMap(ind -> ind.getChildren().stream())
-				.filter(IndividualUtils::isMale).distinct()
-				.filter(Predicate.not(individual::equals))
-				.toList();
+		return getSiblings(individual).stream()
+				.filter(IndividualUtils::isMale).toList();
 	}
 
 	public static List<Individual> getSisters(Individual individual) {
-		return individual.getParents().stream()
-				.flatMap(ind -> ind.getChildren().stream())
-				.filter(IndividualUtils::isFemale).distinct()
-				.filter(Predicate.not(individual::equals))
-				.toList();
+		return getSiblings(individual).stream()
+				.filter(IndividualUtils::isFemale).toList();
+	}
+
+	// grandchildren
+
+	public static List<Individual> getGrandchildren(Individual individual) {
+		return individual.getChildren().stream()
+				.flatMap(c -> c.getChildren().stream())
+				.distinct().toList();
 	}
 
 	public static List<Individual> getGrandsons(Individual individual) {
-		return individual.getChildren().stream()
-				.flatMap(ind -> ind.getChildren().stream())
-				.filter(IndividualUtils::isMale).distinct().toList();
+		return getGrandchildren(individual).stream()
+				.filter(IndividualUtils::isMale).toList();
 	}
 
 	public static List<Individual> getGranddaughters(Individual individual) {
-		return individual.getChildren().stream()
-				.flatMap(ind -> ind.getChildren().stream())
-				.filter(IndividualUtils::isFemale).distinct().toList();
+		return getGrandchildren(individual).stream()
+				.filter(IndividualUtils::isFemale).toList();
 	}
+
+	// piblings
+
+	public static List<Individual> getPiblings(Individual individual) {
+		var parents = individual.getParents();
+		var parentsSiblings = parents.stream()
+				.flatMap(p -> p.getParents().stream())
+				.flatMap(pp -> pp.getChildren().stream())
+				.filter(s -> !parents.contains(s))
+				.distinct().toList();
+		return parentsSiblings;
+	}
+
+	public static List<Individual> getUncles(Individual individual) {
+		return getPiblings(individual).stream().filter(IndividualUtils::isMale).toList();
+	}
+
+	public static List<Individual> getAunts(Individual individual) {
+		return getPiblings(individual).stream().filter(IndividualUtils::isFemale).toList();
+	}
+
+	// aux
 
 	private static boolean isMale(Individual individual) {
 		return individual.getGender() == Gender.MALE;
